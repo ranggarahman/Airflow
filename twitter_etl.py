@@ -7,10 +7,10 @@ import pandas as pd
 import json
 from datetime import datetime
 import s3fs
-from azure.storage.blob import BlockBlobService
-from azure.storage.blob import ContentSettings
+# from azure.storage.blob import BlockBlobService
+# from azure.storage.blob import ContentSettings
 
-def run_twitter_etl():
+def run_twitter_extract():
   # For twitter API credentials
   class Credentials():
     def __init__(self, access_token, access_token_secret, consumer_key, consumer_secret):
@@ -58,20 +58,20 @@ def run_twitter_etl():
   api = twitter_client.get_twitter_client_api()
 
   tweets = api.search(q = "\"World Cup\" lang:en -filter:links", count=100)
-  df_tate = tweet_analyzer.tweets_to_data_frame(tweets)
+  df_worldcup = tweet_analyzer.tweets_to_data_frame(tweets)
 
-  df_tate.to_csv('world_cup_tweet.csv')
+  # df_tate.to_csv('world_cup_tweet.csv')
 
-  block_blob_service = BlockBlobService(account_name='azurewonderful',account_key='JRyejoZn/9Qzg7UMWswAm+EM+prmVQDqzikwGUA1xEuGFPdiN9fJDAbvFZBuP2UfzJWub3bACs4I+AStYIdK/w==')
-  # block_blob_service.create_container('mycontainer')
+  # block_blob_service = BlockBlobService(account_name='azurewonderful',account_key='JRyejoZn/9Qzg7UMWswAm+EM+prmVQDqzikwGUA1xEuGFPdiN9fJDAbvFZBuP2UfzJWub3bACs4I+AStYIdK/w==')
+  # # block_blob_service.create_container('mycontainer')
 
-  #Upload the CSV file to Azure cloud
-  block_blob_service.create_blob_from_path(
-      'mycontainer',
-      'myblockblob.csv',
-      'world_cup_tweet.csv',
-      content_settings=ContentSettings(content_type='application/CSV')
-      )
+  # #Upload the CSV file to Azure cloud
+  # block_blob_service.create_blob_from_path(
+  #     'mycontainer',
+  #     'myblockblob.csv',
+  #     'world_cup_tweet.csv',
+  #     content_settings=ContentSettings(content_type='application/CSV')
+  #     )
 
   # # Check the list of blob
   # generator = block_blob_service.list_blobs('mycontainer')
