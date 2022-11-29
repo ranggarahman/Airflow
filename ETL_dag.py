@@ -3,7 +3,9 @@ from airflow import DAG
 from airflow.operators.python import PythonOperator
 from airflow.utils.dates import days_ago
 from datetime import datetime
-from twitter_etl import run_twitter_extract
+from twitter_extract import run_twitter_extract
+from twitter_transform import run_twitter_transform
+from youtube_extract import run_youtube_extract
 
 default_args = {
     'owner': 'airflow',
@@ -17,15 +19,29 @@ default_args = {
 }
 
 dag = DAG(
-    'twitter_dag',
+    'ETL_dag',
     default_args=default_args,
+    schedule_interval='0 */12 * * *',
     description='my etl code'
 )
 
 run_twitter_extract = PythonOperator(
     task_id='complete_twitter_extract',
     python_callable=run_twitter_extract,
+        dag=dag,
+)
+
+run_twitter_transform = PythonOperator(
+    task_id='complete_twitter_transform',
+    python_callable=run_twitter_transform,
     dag=dag,
 )
 
-run_twitter_extract
+run_youtube_extract = PythonOperator(
+    task_id='complete_youtube_extract',
+    python_callable=run_youtube_extract,
+    dag=dag,
+)
+
+run_twitter_extract >> run_twitter_transform
+run_youtube_extract
