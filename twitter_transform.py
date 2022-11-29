@@ -2,8 +2,6 @@ import re
 import pandas as pd
 from twitter_extract import run_twitter_extract
 
-raw = run_twitter_extract()
-
 def run_twitter_transform(data):
     def remove_emoji(data):
         emoj = re.compile("["
@@ -47,5 +45,3 @@ def run_twitter_transform(data):
 
     df = pd.DataFrame(message_list)
     return df
-
-run_twitter_transform(raw)

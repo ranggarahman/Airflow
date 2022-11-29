@@ -27,9 +27,10 @@ def run_twitter_extract():
     for tweet in tweets:
         refined_tweet = {
             'text': tweet.text,
-            'created_at': tweet.created_at
+            #'created_at': tweet.created_at
         }
         tweet_list.append(refined_tweet)
 
     df = pd.DataFrame(tweet_list)
+
     return df
