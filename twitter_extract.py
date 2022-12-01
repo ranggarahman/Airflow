@@ -4,6 +4,7 @@ import json
 from datetime import datetime
 import s3fs
 
+
 def run_twitter_extract():
 
     api_key = "c7teHMdEtATuelCefrf9SiUaL"
@@ -27,10 +28,10 @@ def run_twitter_extract():
     for tweet in tweets:
         refined_tweet = {
             'text': tweet.text,
-            #'created_at': tweet.created_at
+            # 'created_at': tweet.created_at
         }
         tweet_list.append(refined_tweet)
 
     df = pd.DataFrame(tweet_list)
-
+    df = df.to_json()
     return df

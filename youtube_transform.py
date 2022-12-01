@@ -1,10 +1,10 @@
 import re
 import pandas as pd
-from twitter_extract import run_twitter_extract
+from youtube_extract import run_youtube_extract
 
 
-def run_twitter_transform():
-    data = pd.read_json(run_twitter_extract())
+def run_youtube_transform():
+    data = pd.read_json(run_youtube_extract())
 
     def remove_emoji(data):
         emoj = re.compile("["
@@ -36,16 +36,20 @@ def run_twitter_transform():
         return result
 
     message_list = []
-    for d in data['text']:
+    for d in data['Comment']:
         no_emoji_message = remove_emoji(d)
 
         clean_message = remove_user_and_link(no_emoji_message)
 
         final_message = {
-            'text': clean_message
+            'comment': clean_message
         }
+
         message_list.append(final_message)
 
     df = pd.DataFrame(message_list)
     df = df.to_json()
     return df
+
+
+# run_youtube_transform()
